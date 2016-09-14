@@ -23,6 +23,8 @@ import java.util.Comparator;
 
 /**
  * Created by Mehul on 12/09/16.
+ * This Adapter is used by AutoCompleteTextView to show the list in the dropdown manner
+ *
  */
 public class AutoCompleteAdapter extends ArrayAdapter<LocationInformation> {
 
@@ -72,8 +74,17 @@ public class AutoCompleteAdapter extends ArrayAdapter<LocationInformation> {
       return  null;
     }
 
+    /**
+     * This class is used to perform Filtering and sorting to the data
+     */
     public class ArrayFilter extends Filter{
 
+        /**
+         * This method performs the filtering process
+         * It is called when user types any character
+         * @param charSequence
+         * @return
+         */
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             FilterResults filterResults = new FilterResults();
@@ -97,6 +108,12 @@ public class AutoCompleteAdapter extends ArrayAdapter<LocationInformation> {
         }
 
 
+        /**
+         * THis method will redisplay the list
+         * We are perfomring sorting operation on the basis of Distance from the current location
+         * @param charSequence
+         * @param filterResults
+         */
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             final Double savedLatitide = SharePreferenceUtil.getDoubleFromSharePreference(context, context.getString(R.string.pref_latitude));

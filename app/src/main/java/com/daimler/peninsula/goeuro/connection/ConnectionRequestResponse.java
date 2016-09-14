@@ -24,6 +24,13 @@ import java.util.List;
 
 public class ConnectionRequestResponse {
 
+    /**
+     * This method makes the connection with the Location Search API
+     *
+     * @param textTyped - characters typed by user
+     * @param context
+     * @return
+     */
     public synchronized ArrayList<LocationInformation> callLocationAPIService(String textTyped, Context context) {
         ArrayList<LocationInformation> locationInformationArrayList = new ArrayList<>();
         BufferedReader bufferedReader = null;

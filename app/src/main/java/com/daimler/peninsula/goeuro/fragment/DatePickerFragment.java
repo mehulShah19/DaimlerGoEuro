@@ -24,6 +24,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     Calendar initCalendar;
 
+    /**
+     * It creates the instance of the Diloag Fragment
+     * Parameter calendar will be the initial date which will be shown when the date picker is displayed
+     * @param calendar
+     * @return
+     */
+
     public static DatePickerFragment getInstance(Calendar calendar){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         Bundle bundle = new Bundle();
@@ -52,6 +59,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
+    /**
+     * When a date is selected by the user this method is called
+     * @param view
+     * @param year
+     * @param month
+     * @param day
+     */
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();

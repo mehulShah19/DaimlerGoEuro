@@ -11,6 +11,11 @@ import android.widget.ProgressBar;
 /**
  * Created by Mehul on 13/09/16.
  */
+
+/**
+ * This class is created to avoid network calls for rapid typing
+ * It will make filtering call only if user is halted more than MESSAGE_TEXT_CHANGED milliseconds
+ */
 public class DelayAutoCompleteTextView extends AutoCompleteTextView {
 
     private static final int MESSAGE_TEXT_CHANGED = 100;

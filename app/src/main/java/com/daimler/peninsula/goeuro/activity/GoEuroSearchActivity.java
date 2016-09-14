@@ -41,6 +41,7 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
     private static final String FRAGMENT_ALERT_FRAGMENT = "FRAGMENT_ALERT_FRAGMENT";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
+    //Views
     private DelayAutoCompleteTextView startLocationAutoCompleteTV;
     private ProgressBar startLocationPB;
     private DelayAutoCompleteTextView endLocationAutoCompleteTV;
@@ -50,9 +51,11 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
     private AutoCompleteAdapter startLocationAdapter, endLocationAdapter;
     private Calendar dateOfJourneyCalendar;
     private Context context;
+
     protected GoogleApiClient mGoogleApiClient;
 
 
+    //Called when the activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
         setDateToView(dateOfJourneyCalendar);
     }
 
+    // Attached date to the View in dd.mm.yyyy format
     public void setDateToView(Calendar calendar) {
         if (calendar == null) {
             return;
@@ -72,8 +76,9 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
         dateOfJourneyTV.setText(GoEuroUtils.convertCalendarToString(calendar));
     }
 
-    // End Of Content View Elements
-
+    /**
+     * Initializes the Views, adapters and intiate the clickListeners
+     */
     private void initializeViews() {
         startLocationAutoCompleteTV = (DelayAutoCompleteTextView) findViewById(R.id.startLocationAutoCompleteTV);
         startLocationPB = (ProgressBar) findViewById(R.id.startLocationPB);
@@ -110,6 +115,12 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
         searchTV.setOnClickListener(this);
     }
 
+    /**
+     * This method converts the LocationInformation Name to LocationInformation Name + (Country Name)
+     * @param adapterView
+     * @param i
+     * @return
+     */
     private String getDisplayName(AdapterView<?> adapterView, int i) {
         String displayName = "";
         Object locationInformationObject = adapterView.getItemAtPosition(i);
@@ -152,6 +163,7 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
     }
 
 
+    // PermissionResultInterface methods are called depending on the status of the Location permission for Marshmellow and higher devices
     PermissionResultInterface phonePermissionResultInterface = new PermissionResultInterface() {
         @Override
         public void OnPermissionGranted() {
@@ -181,6 +193,11 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * When the access to the location permssion is granted this method is called
+     * Internally it rechecks whether permission is given or not
+     * THis permission is introduced from Marshmellow API 23
+     */
     private void onLocationAccessGranted() {
         try {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1 && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
@@ -198,6 +215,7 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
+        //Connecting with te Google API Client
         mGoogleApiClient.connect();
     }
 
@@ -205,6 +223,7 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
     protected void onStop() {
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
+            //Disconnecting with the Google Client
             mGoogleApiClient.disconnect();
         }
     }
@@ -225,12 +244,10 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private  void saveGeoLocationToSharedPreference(double latitude, double longitude) {
-            SharePreferenceUtil.saveDoubleToSharePreference(context, getString(R.string.pref_latitude) , latitude);
-            SharePreferenceUtil.saveDoubleToSharePreference(context, getString(R.string.pref_longitude), longitude);
-    }
-
-
+    /**
+     * Calles when the Google API Client is unable to connect
+     * @param result
+     */
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
@@ -238,11 +255,14 @@ public class GoEuroSearchActivity extends AppCompatActivity implements View.OnCl
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
-
     @Override
     public void onConnectionSuspended(int cause) {
         // The connection to Google Play services was lost for some reason. We call connect() to
         // attempt to re-establish the connection.
         mGoogleApiClient.connect();
+    }
+    private  void saveGeoLocationToSharedPreference(double latitude, double longitude) {
+        SharePreferenceUtil.saveDoubleToSharePreference(context, getString(R.string.pref_latitude) , latitude);
+        SharePreferenceUtil.saveDoubleToSharePreference(context, getString(R.string.pref_longitude), longitude);
     }
 }

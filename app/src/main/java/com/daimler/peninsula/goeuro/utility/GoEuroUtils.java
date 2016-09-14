@@ -23,6 +23,12 @@ import java.util.Locale;
 public class GoEuroUtils {
     private static int singleDayInMilleseconds = 24 * 60 * 60 * 1000;
 
+    /**
+     * Get Locale Language of the user
+     * By default it's kept to de
+     * @param context
+     * @return
+     */
     public static String getLocale(Context context){
         String result = context.getString(R.string.defaultLanguage);
         Locale locale = null;
@@ -43,6 +49,11 @@ public class GoEuroUtils {
         return result;
     }
 
+    /**
+     * Converts the calendar to the String in the format day. month. year
+     * @param calendar
+     * @return
+     */
     public static String convertCalendarToString(Calendar calendar){
         if(calendar == null){
             return "";
@@ -55,6 +66,9 @@ public class GoEuroUtils {
         return (day + "." + (month + 1) + "." + year);
     }
 
+    /*
+        This method is used to check whether the date selected is not the old date
+     */
     public static boolean isDateValid(Calendar calendar){
             if(calendar == null){
                 return false;
@@ -72,13 +86,18 @@ public class GoEuroUtils {
             day = checkingCalendar.get(Calendar.DAY_OF_MONTH);
             checkingCalendar.set(year, month, day, 0, 0,0);
 
-            if(checkingCalendar.getTimeInMillis() - currentDate.getTimeInMillis() >  singleDayInMilleseconds){
+            if(checkingCalendar.getTimeInMillis() - currentDate.getTimeInMillis() >=  singleDayInMilleseconds){
                 return true;
             }else{
                 return false;
             }
     }
 
+    /**
+     * This method is used to display name in the format LocationName (Country Name)
+     * @param locationInformation
+     * @return
+     */
     public static String getDisplayName(LocationInformation locationInformation){
         String result = "";
         if(locationInformation == null) {return result;}
@@ -90,6 +109,11 @@ public class GoEuroUtils {
         return result;
     }
 
+    /**
+     * Checks Internet Connectivity
+     * @param context
+     * @return
+     */
     public static boolean isInternetAvailable(Context context) {
         boolean flag;
         ConnectivityManager cm =
@@ -99,6 +123,10 @@ public class GoEuroUtils {
         return flag;
     }
 
+    /**
+     * Dismisses the Virtual Keyboard if present in the screen
+     * @param activity
+     */
     public static void dismissVirtualKeyboard(Activity activity){
         View view = activity.getCurrentFocus();
         if (view != null) {

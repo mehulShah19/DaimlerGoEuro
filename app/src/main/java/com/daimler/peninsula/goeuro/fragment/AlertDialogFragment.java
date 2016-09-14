@@ -19,6 +19,12 @@ public class AlertDialogFragment extends DialogFragment {
 
     }
 
+    /**
+     * This method is used to create the instance of the AlertDialog Fragment
+     * This alert dialog has only one button as Ok
+     * @param title - Shows the title of the popup
+     * @return
+     */
     public static AlertDialogFragment getInstance(String title){
         AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
         if(!TextUtils.isEmpty(title)) {
